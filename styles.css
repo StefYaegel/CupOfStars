@@ -179,21 +179,46 @@ canvas {
 
 @media (max-width: 1200px) {
     #score, #record {
-        font-size: calc(1.35vw + 1.35vh);    
+        font-size: calc(1.35vw + 1.35vh);
+    }
+}
+@media (max-width: 1000px) {
+    #score, #record {
+        font-size: calc(1.3vw + 1.3vh);  
     }
 }
 @media (max-width: 900px) {
     #score, #record {
-        font-size: calc(1.25vw + 1.25vh);    
+        font-size: calc(1.25vw + 1.25vh);
+    }
+}
+@media (max-width: 800px) {
+    #score, #record {
+        font-size: calc(1.2vw + 1.2vh);  
+    }
+}
+@media (max-width: 700px) {
+    #score, #record {
+        font-size: calc(1.15vw + 1.15vh);  
     }
 }
 @media (max-width: 600px) {
     #score, #record {
-        font-size: calc(1vw + 1vh);    
+        font-size: calc(1vw + 1vh);
+    }
+}
+@media (max-width: 500px) {
+    #score, #record {
+        font-size: calc(0.85vw + 0.85vh);  
     }
 }
 @media (max-width: 400px) {
     #score, #record {
-        font-size: calc(.75vw + .75vh);    
+        font-size: calc(0.75vw + 0.75vh);
+    }
+}
+@media (max-width: 320px) {
+    #score, #record {
+        font-size: calc(0.65vw + 0.65vh);  
     }
 }
