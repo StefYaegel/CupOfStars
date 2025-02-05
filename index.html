@@ -38,12 +38,11 @@
     const timerElement = document.getElementById('timer');
     let elapsedTime = 0;
     let startTime;
-    let bestTime = 0;
     let loadScreen = true;
 
     document.getElementById("startbutton").addEventListener("click", startGame);
+    let bestTime = localStorage.getItem('bestTime') || 0;
 
-    
     function startGame() {
         document.body.style.backgroundImage = "url('backgroundcolor.png')";
         startTime = Date.now();
@@ -69,6 +68,7 @@
 
             if (elapsedTime > bestTime){
                 bestTime = elapsedTime;
+                localStorage.setItem('bestTime', bestTime); 
             }
 
             if (elapsedTime > 1){
