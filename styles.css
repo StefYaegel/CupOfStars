@@ -186,3 +186,8 @@ canvas {
         font-size: calc(1vw + 1vh);    
     }
 }
+@media (max-width: 300px) {
+    #score, #record {
+        font-size: calc(.75vw + .75vh);    
+    }
+}
