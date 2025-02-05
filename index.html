@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cup Of Stars</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Concert+One&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="webicon.png">
+</head>
+
+<body>    
+
+    <canvas id="gameCanvas"></canvas>
+    <img id= "audioButton" src="audiooff.png" >
+    <p id="timer"></p>
+    <img id="title" src = "title.png" >
+
+    <div id="gameover">
+        <audio autoplay loop id="audio">
+            <source src="funnybgm.mp3" type="audio/mp3">
+          </audio>  
+          <div id="billboard">
+            <img id="gameStartImage" src="instructions.png" alt="">
+            <p id="score"></p>
+            <p id="record"></p>
+            <img id="startbutton" src="startbutton.png" alt="Start Button">
+          </div>
+    </div>
+
+    <img id="githubUsername" src = "githubusername.png" alt="">
+      
+</body>
+
+<script>
+
+    const timerElement = document.getElementById('timer');
+    let elapsedTime = 0;
+    let startTime;
+    let bestTime = 0;
+    let loadScreen = true;
+
+    document.getElementById("startbutton").addEventListener("click", startGame);
+
+    
+    function startGame() {
+        document.body.style.backgroundImage = "url('backgroundcolor.png')";
+        startTime = Date.now();
+        timerElement.textContent = `${elapsedTime}s`;
+        document.getElementById("gameover").style.display = "none";
+        document.getElementById("title").style.display = "block";
+        document.getElementById("githubUsername").style.display = "block";
+        document.getElementById("gameCanvas").style.cursor = "none";
+        resetGame();
+        setInterval(updateTimer, 1000);
+        createStars();
+        gameLoop();
+        loadScreen = false;
+    }
+
+    function updateTimer() {
+        if (!gameOver){
+            elapsedTime = Math.floor((Date.now() - startTime) / 1000);
+            timerElement.textContent = `${elapsedTime}s`;
+        }
+
+        if (gameOver){
+
+            if (elapsedTime > bestTime){
+                bestTime = elapsedTime;
+            }
+
+            if (elapsedTime > 1){
+                document.getElementById("score").innerText = `time: ${elapsedTime} seconds`;
+            } else {
+                document.getElementById("score").innerText = `time: ${elapsedTime} second`;
+            }
+            
+            if (bestTime > 1){
+                document.getElementById("record").innerText = `best record: ${bestTime} seconds`;
+            } else {
+                document.getElementById("record").innerText = `best record: ${bestTime} second`;
+            }
+
+        }
+    }
+
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+
+    const starImages = ['bluestar.png', 'pinkstar.png', 'redstar.png', 'greenstar.png', 'purplestar.png', 'yellowstar.png'];
+
+    let stars = [];
+    let player = { x: 0, y: 0, width: 45, height: 45 }; 
+    let gameOver = false;
+    let mouseX = 0, mouseY = 0;
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const playerImage = new Image();
+    playerImage.src = 'yellowstar.png';
+
+    document.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+    });
+
+    function getNumStars() {
+        if (window.innerWidth < 950) {
+            return 40;  
+        } else {
+            return 70;  
+        }
+    }
+
+    function Star() {
+        const margin = 50;
+        this.x = Math.random() * (canvas.width - margin * 2) + margin;
+        this.y = Math.random() * (canvas.height - margin * 2) + margin;
+        this.radius = 22;
+        this.vx = (Math.random() - 0.5) * 6;
+        this.vy = (Math.random() - 0.5) * 5;
+        this.image = new Image();
+        this.image.src = starImages[Math.floor(Math.random() * starImages.length)];
+    }
+
+    function createStars() {
+        const NUM_STARS = getNumStars();
+
+        for (let i = 0; i < NUM_STARS; i++) {
+            stars[i] = new Star(); 
+        }
+    }
+
+
+    function drawPlayer() {
+        const canvasWidth = canvas.width;
+        const canvasHeight = canvas.height;
+
+        const mouseXRelative = mouseX * canvasWidth / window.innerWidth;
+        const mouseYRelative = mouseY * canvasHeight / window.innerHeight;
+
+        ctx.drawImage(playerImage, mouseXRelative - player.width / 2, mouseYRelative - player.height / 2, player.width, player.height);
+    }
+
+
+    function drawStars() {
+        stars.forEach(star => {
+            ctx.drawImage(star.image, star.x, star.y, star.radius * 2, star.radius * 2);
+        });
+    }
+
+    function moveStars() {
+        stars.forEach(star => {
+            star.x += star.vx;
+            star.y += star.vy;
+
+            if (star.x <= 0 || star.x >= canvas.width - star.radius * 2) {
+                star.vx = -star.vx;
+            }
+
+            if (star.y <= 0 || star.y >= canvas.height - star.radius * 2) {
+                star.vy = -star.vy;
+            }
+
+            if (isCollision(star)) {
+                gameOver = true;
+                document.getElementById("gameStartImage").src = "gameover.png";
+
+                setTimeout(function() {
+                    gameEnd();
+                }, 0);
+            }
+        });
+    }
+
+    function gameEnd(){
+        document.getElementById("gameover").style.display = "flex";
+        document.getElementById("startbutton").addEventListener("click", startGame);
+        document.getElementById("gameCanvas").style.cursor = "auto";
+    }
+
+
+    function isCollision(star) {
+
+        const current = Date.now();
+        const elapsed = current - startTime;
+
+        if (elapsed < 1000){
+            return false;
+        }
+
+        const playerCenterX = mouseX;
+        const playerCenterY = mouseY;
+        
+        const starCenterX = star.x + star.radius;
+        const starCenterY = star.y + star.radius;
+
+        const dx = playerCenterX - starCenterX;
+        const dy = playerCenterY - starCenterY;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+
+        return distance < player.width / 2 + star.radius;
+    }
+
+    function resetGame() {
+        stars = [];
+        createStars();
+        gameOver = false;
+        document.getElementById("score").innerText = ``;
+        startTime = Date.now(); 
+    }
+
+    function clearCanvas() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+
+    function gameLoop() {
+        if (!gameOver) {
+            clearCanvas();
+            moveStars();
+            drawStars();
+            drawPlayer();
+            elapsedTime = Math.floor((Date.now() - startTime) / 1000); 
+            requestAnimationFrame(gameLoop);
+        }
+    }
+
+    window.onload = function () {
+        loadScreen = true;
+        document.getElementById("gameover").style.display = "flex";
+        document.getElementById("gameCanvas").style.cursor = "auto";
+        document.getElementById("title").style.display = "none";
+        document.getElementById("githubUsername").style.display = "none";
+    };
+
+    const audio = document.getElementById("audio");
+    const audioButton = document.getElementById("audioButton");
+
+    audioButton.addEventListener("click", () => {
+      if (audio.paused) {
+        audio.play();  
+        audioButton.src = "audioon.png"
+      } else {
+        audio.pause();  
+        audioButton.src = "audiooff.png"
+      }
+    });
+
+    window.addEventListener('mousemove', function(e) {
+      var arr = [1, 0.9, 0.8, 0.5, 0.2];
+
+      if (!gameOver && !loadScreen){
+        arr.forEach(function(i) {
+        var x = (1 - i) * 75;
+        var star = document.createElement('div');
+
+        star.className = 'star';
+        star.style.top = e.pageY + Math.round(Math.random() * x - x / 2) + 'px';
+        star.style.left = e.pageX + Math.round(Math.random() * x - x / 2) + 'px';
+
+        document.body.appendChild(star);
+
+        window.setTimeout(function() {
+          document.body.removeChild(star);
+        }, Math.round(Math.random() * i * 600));
+      });
+      }
+
+    }, false);
+
+    function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+    }
+
+    window.addEventListener('resize', function() {
+        if (!loadScreen){
+            gameOver = true;
+                document.getElementById("gameStartImage").src = "gameover.png";
+
+                setTimeout(function() {
+                    gameEnd();
+                }, 0);
+        }
+        resizeCanvas();  
+
+    });
+
+</script>
+</html>
+
+<!-- Credits 
+    BGM: Music by Sekuora from Pixabay
+    Font 1: Atop by GraphicSauce
+    Font 2: Bubble by Kido Studio
+    Font 3: Concert One from Google Fonts 
+    Wallpaper: Codioful from Pexels on Canva
+    Star trail: Winterwind.com https://www.youtube.com/watch?v=MiUGn9QPYcs 
+ -->

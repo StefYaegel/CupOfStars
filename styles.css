@@ -1,0 +1,188 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Concert+One&display=swap');
+
+#title {
+    position: absolute;
+    max-width: 20vw; 
+    height: auto; 
+    top: 3vh;
+    display: none;
+    z-index: 2;
+    cursor: pointer;
+}
+
+#timer {
+    font-size: calc(1.5vw + 1.5vh);
+    font-family: 'Concert One', serif;
+    font-style: normal;
+    font-weight: 400;
+    color: #333;
+    position: absolute;
+    top: -2%;
+    left: 2%;
+    z-index: 2;
+}
+
+a {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+}
+
+#githubUsername {
+    position: absolute;
+    max-width: 10vw; 
+    height: auto; 
+    bottom: 2vh;
+    left: 45%;
+    display: none;
+    z-index: 2;
+    cursor: pointer;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    height: 100vh; 
+    background-image: url(fullbgstars.png);
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block; 
+    z-index: 10;
+    cursor: none;
+}
+
+#gameover {
+    position: relative; 
+    width: 100%; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    z-index: 10;
+}
+
+#gameCanvas {
+    width: 100%;
+    height: 100%;
+    /* pointer-events: none; */
+    cursor: none;
+}
+
+#gameStartImage {
+    max-width: 40vw; 
+    height: auto;  
+    display: block;
+    margin-bottom: 5vw; 
+}
+
+#startbutton {
+    max-width: 20vw; 
+    height: auto; 
+    cursor: pointer;
+    display: block;
+    margin-top: -15%;
+    /* margin-top: calc(-5vw + -10vh); */
+    z-index: 12;
+}
+
+#startbutton:hover {
+    opacity: .8;
+}
+
+#score {
+    font-size: calc(1.5vw + 1.5vh);    
+    font-family: 'Concert One', serif;
+    font-style: normal;
+    font-weight: 400;
+    color: #333;
+    position: absolute;
+    top: 30%;
+    left: 42%;
+    z-index: 15;
+    margin: 2vw 0;
+}
+
+#record {
+    font-size: calc(1.5vw + 1.5vh);
+    font-family: 'Concert One', serif;
+    font-style: normal;
+    font-weight: 400;
+    color: #000000;
+    position: absolute;
+    top: 41%;
+    left: 39%;
+    z-index: 15;
+    margin: 2vw 0; 
+}
+
+
+#audioButton {
+    position: absolute;
+    max-width: 5vw; 
+    height: auto; 
+    top: 3%;
+    right: 2%;
+    z-index: 11;
+    pointer-events: all;
+    cursor: pointer;
+}
+
+#audioButton:hover {
+    opacity: .9;
+}
+
+/* winterwind.com */
+/* https://www.youtube.com/watch?v=MiUGn9QPYcs */
+.star {
+	position: fixed;
+	pointer-events: none;
+}
+
+.star:before, .star:after {
+	position: absolute;
+	top: 0;
+	left: 0;
+	content: '\2726';
+	font-size: 9px;
+}
+
+.star:before {
+	color: transparent;
+	text-shadow: 0 0 3px rgb(254, 226, 159);
+    
+}
+
+.star:after {
+	background: rgb(250, 221, 155);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+}
+
+#billboard {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+}
+@media (max-width: 900px) {
+    #score, #record {
+        font-size: calc(1.25vw + 1.25vh);    
+    }
+}
+@media (max-width: 600px) {
+    #score, #record {
+        font-size: calc(1vw + 1vh);    
+    }
+}
