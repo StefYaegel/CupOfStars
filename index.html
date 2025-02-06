@@ -308,6 +308,16 @@
 
     });
 
+    document.addEventListener('visibilitychange', function() {
+      if (document.hidden) {
+                document.getElementById("gameStartImage").src = "gameover.png";
+
+                setTimeout(function() {
+                    gameEnd();
+                }, 0);
+      }
+    });
+
 </script>
 </html>
 
