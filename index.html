@@ -310,6 +310,7 @@
 
     document.addEventListener('visibilitychange', function() {
       if (document.hidden) {
+                gameOver = true;
                 document.getElementById("gameStartImage").src = "gameover.png";
 
                 setTimeout(function() {
