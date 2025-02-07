@@ -310,12 +310,14 @@
 
     document.addEventListener('visibilitychange', function() {
       if (document.hidden) {
+        if (!loadScreen){
                 gameOver = true;
                 document.getElementById("gameStartImage").src = "gameover.png";
 
                 setTimeout(function() {
                     gameEnd();
                 }, 0);
+        }
       }
     });
 
